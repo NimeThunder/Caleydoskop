@@ -97,8 +97,7 @@ async def Next_question(callback: types.CallbackQuery, current_question_index, s
         await get_question(callback.message, callback.from_user.id)
     else:
         await callback.message.answer("Это был последний вопрос. Квиз завершен!")
-        result = await get_quiz_statistics(callback.from_user.id)
-        await callback.message.answer(f"Ваша статистика: {result}/{len(quiz_data)}.")
+        await callback.message.answer(f"Ваша статистика: {statistic}/{len(quiz_data)}.")
 
 @dp.callback_query(F.data[0] == "T")
 async def right_answer(callback: types.CallbackQuery):
@@ -127,6 +126,7 @@ async def cmd_start(message: types.Message):
 @dp.message(F.text=="Начать игру")
 @dp.message(Command("quiz"))
 async def cmd_quiz(message: types.Message):
+    await message.answer_photo(types.URLInputFile("https://storage.yandexcloud.net/quiz-picture/quiz-picture.webp"))
     await message.answer(f"Давайте начнем квиз!")
     await new_quiz(message)
 
